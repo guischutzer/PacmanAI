@@ -4,7 +4,7 @@
 # educational purposes provided that (1) you do not distribute or publish
 # solutions, (2) you retain this notice, and (3) you provide clear
 # attribution to UC Berkeley, including a link to http://ai.berkeley.edu.
-# 
+#
 # Attribution Information: The Pacman AI projects were developed at UC Berkeley.
 # The core projects and autograders were primarily created by John DeNero
 # (denero@cs.berkeley.edu) and Dan Klein (klein@cs.berkeley.edu).
@@ -72,6 +72,18 @@ def tinyMazeSearch(problem):
     w = Directions.WEST
     return  [s, s, w, s, w, w, s, w]
 
+def dfsR(problem, state, queue):
+    problem.expandedList.append(state)
+    for successor in problem.getSuccessors(state):
+        if successor[0] not in problem.expandedList:
+            queue.push(successor)
+            if problem.isGoalState(successor[0]):
+                print "Cheguei!"
+                return
+            dfsR(problem, successor[0], queue)
+
+    return
+
 def depthFirstSearch(problem):
     """
     Search the deepest nodes in the search tree first.
@@ -87,7 +99,18 @@ def depthFirstSearch(problem):
     print "Start's successors:", problem.getSuccessors(problem.getStartState())
     """
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    print "Start:", problem.getStartState()
+    state = problem.getStartState()
+
+    queue = util.Queue()
+    problem.expandedList = []
+
+    dfsR(problem, state, queue)
+    actions= []
+    while not queue.isEmpty():
+        actions.append(queue.pop()[1])
+
+    print actions
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
